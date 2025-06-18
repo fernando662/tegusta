@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Para Ti, Fabiana - Letras y Música</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Dancing Script', cursive;
+      background: linear-gradient(135deg, #fbc7c7, #8e2de2, #4a00e0);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #3a0e3a;
+      position: relative;
+      padding: 20px;
+      text-align: center;
+    }
+
+    button {
+      padding: 18px 40px;
+      font-size: 1.8rem;
+      border: none;
+      border-radius: 40px;
+      background-color: #ff9a9e;
+      color: #3a0e3a;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(255, 154, 158, 0.7);
+      transition: background-color 0.3s ease;
+      font-weight: 700;
+      margin-bottom: 30px;
+      user-select: none;
+      z-index: 10;
+      position: relative;
+    }
+
+    button:hover {
+      background-color: #ff6f91;
+    }
+
+    .mensaje {
+      max-width: 600px;
+      background: rgba(255, 154, 158, 0.9);
+      padding: 30px 40px;
+      border-radius: 30px;
+      font-size: 1.6rem;
+      box-shadow: 0 0 25px rgba(255, 154, 158, 0.9);
+      color: #3a0e3a;
+      font-weight: 700;
+      line-height: 1.4;
+      position: relative;
+      z-index: 10;
+      margin-bottom: 30px;
+      min-height: 120px;
+    }
+
+    .gif-container {
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+    }
+
+    .gif-container img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      box-shadow: 0 0 15px rgba(255, 154, 158, 0.9);
+    }
+
+    #letra {
+      font-size: 1.5rem;
+      color: #5a1d5a;
+      font-style: italic;
+      margin-top: 10px;
+      min-height: 80px;
+      transition: opacity 0.5s ease;
+    }
+
+    #poema {
+      margin-top: 25px;
+      font-size: 1.3rem;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 20px;
+      padding: 15px 25px;
+      line-height: 1.6;
+    }
+
+    .frase {
+      position: fixed;
+      color: white;
+      font-size: 1.3rem;
+      font-weight: bold;
+      opacity: 0.7;
+      pointer-events: none;
+      user-select: none;
+      animation: caer 8s linear forwards;
+      font-family: 'Dancing Script', cursive;
+      z-index: 1;
+    }
+
+    @keyframes caer {
+      0% {
+        transform: translateY(-50px);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <button id="btnPlay">▶️ Escuchar "Lo Que Siento"</button>
+
+  <div class="mensaje" id="mensaje" style="display:none;">
+    <div class="gif-container">
+      <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcHp2ZnpqdTR5ZXByZ2k1M3h0MXd5dDF3Zm00bzNwYXU0ZGY1YWRkZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/nPimYMB3xCgsYopm6l/giphy.gif" alt="Corazones" />
+      <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2h2ZXIxaTgxeWxxZzE0b3RkNGMzb2Y5dmk0d2QyaTBmdTltbHFtNSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/0UVw5Pvzm0Bh7be6Vi/giphy.gif" alt="Girasol" />
+    </div>
+
+    <div id="letra">
+      <!-- Aquí aparecerán las líneas de la letra sincronizadas -->
+    </div>
+
+    <div id="poema">
+      No soy perfecto, pero sí sincero...<br>
+      Cada latido de mi corazón late por ti.<br><br>
+      Quisiera caminar contigo bajo la luna,<br>
+      y escribir con besos nuestra fortuna.<br><br>
+      Si tú sonríes, el mundo se detiene,<br>
+      y mi alma entera por ti se mantiene.<br><br>
+      ¿Me dejas ser parte de tu historia?<br>
+      Porque tú ya eres parte de la mía. 💖
+    </div>
+  </div>
+
+  <audio id="musica" preload="auto">
+    <source src="lo que siento.mp3" type="audio/mpeg" />
+    Tu navegador no soporta reproducción de audio.
+  </audio>
+
+  <script>
+    const btnPlay = document.getElementById('btnPlay');
+    const mensaje = document.getElementById('mensaje');
+    const musica = document.getElementById('musica');
+    const letraDiv = document.getElementById('letra');
+
+    const letra = [
+      { tiempo: 0, texto: "No soy perfecto, pero quiero intentar," },
+      { tiempo: 6, texto: "que me des la mano y me dejes entrar." },
+      { tiempo: 12, texto: "Cada latido es un suspiro por ti," },
+      { tiempo: 18, texto: "un deseo infinito de poder compartir." },
+      { tiempo: 24, texto: "Quiero conocerte y ser tu amigo fiel," },
+      { tiempo: 30, texto: "caminar juntos y construir nuestro papel." },
+      { tiempo: 36, texto: "Si me das la oportunidad de amar," },
+      { tiempo: 42, texto: "prometo cuidarte y nunca dejarte escapar." },
+      { tiempo: 48, texto: "Eres mi sueño, mi luz, mi razón," },
+      { tiempo: 54, texto: "contigo quiero vivir esta canción." }
+    ];
+
+    let lineaActual = 0;
+
+    btnPlay.addEventListener('click', () => {
+      musica.play();
+      mensaje.style.display = 'block';
+      btnPlay.style.display = 'none';
+
+      actualizarLetra();
+      musica.addEventListener('timeupdate', actualizarLetra);
+    });
+
+    function actualizarLetra() {
+      const tiempoActual = musica.currentTime;
+
+      if (lineaActual < letra.length - 1 && tiempoActual >= letra[lineaActual + 1].tiempo) {
+        lineaActual++;
+        mostrarLinea(lineaActual);
+      } else if (lineaActual === 0 && tiempoActual >= letra[0].tiempo) {
+        mostrarLinea(lineaActual);
+      }
+    }
+
+    function mostrarLinea(index) {
+      letraDiv.style.opacity = 0;
+      setTimeout(() => {
+        letraDiv.textContent = letra[index].texto;
+        letraDiv.style.opacity = 1;
+      }, 300);
+    }
+
+ // Frases románticas que caerán desde arriba
+const frasesFlotantes = [
+  "Eres mi todo", "Contigo todo es mejor", "Tu sonrisa ilumina mi alma", "Solo tú me haces vibrar", "Eres mi lugar favorito",
+  "Tus ojos, mi paz", "Te pienso y sonrío", "Eres el poema que no dejo de leer", "Mi corazón late por ti", "Solo tú y yo",
+  "Eres la casualidad más bonita", "Tu amor es mi refugio", "Siempre tú", "Amar es mirarte y sonreír", "Mi universo eres tú",
+  "Nunca es suficiente contigo", "Eres magia pura", "Tú me haces feliz", "Tu voz me calma", "Mi mejor historia eres tú",
+  "Eres mi inspiración", "Por siempre tú", "Juntos somos invencibles", "Todo me lleva a ti", "Tu risa es mi canción favorita",
+  "El destino eres tú", "Amarte es fácil", "Eres mi sol", "Me haces soñar despierto", "No hay nadie como tú",
+  "Nuestro amor no tiene final", "Lo mejor de mi vida eres tú", "Eres lo que soñé", "Sin ti no hay música", "Tu amor me transforma",
+  "Eres mi paz y mi tormenta", "Tú vales cada latido", "Eres lo que busqué sin saber", "Eres lo más bonito que tengo",
+  "Tu presencia es mi alegría", "Tú haces que todo valga la pena", "Cada momento contigo es oro", "Eres un milagro en mi vida",
+  "Eres lo mejor que me ha pasado", "Mi alma te reconoce", "Tú y yo somos arte", "Tú completas mi historia",
+  "Tu amor es mi motor", "Nunca dejo de pensarte", "Tú haces que el mundo brille", "Eres mi mejor pensamiento",
+  "Me encantas más cada día", "Siempre tú en mi mente", "Eres mi mejor regalo", "Eres mi lugar feliz", "Gracias por existir",
+  "Mi amor por ti no tiene límites", "No sé cómo, pero te necesito", "Amarte es mi destino", "Tú eres mi norte",
+  "Eres todo lo que está bien", "Tu amor me da alas", "Estoy hecho para ti", "Eres mi más bella casualidad",
+  "Me enamoras a cada paso", "Tu amor me da vida", "Eres mi eternidad", "Mi felicidad empieza contigo",
+  "Eres la melodía de mi alma", "Tú eres mi poesía", "Mi corazón es tuyo", "Eres todo lo que quiero",
+  "Estás en cada canción", "Nunca es tarde si es contigo", "Eres el amor que pedí", "Mi sonrisa tiene tu nombre",
+  "Tú eres mi hogar", "Tú y yo somos destino", "Eres lo que buscaba sin saber", "Me haces creer en el amor",
+  "Te pienso y todo mejora", "Tú eres mi historia favorita", "Eres amor en estado puro", "Te elijo una y mil veces",
+  "Tú haces que todo encaje", "Mi alma baila contigo", "Tú eres la calma en mi caos", "Amarte es inevitable",
+  "Eres la flor en mi jardín", "Tú eres mi todo", "Cada latido es por ti", "Tú haces que sueñe más alto",
+  "Solo contigo es real", "Tú eres mi constelación", "Amar es verte sonreír", "Eres mi alegría diaria",
+  "Contigo todo tiene sentido", "Tú eres la chispa de mi vida", "Eres el sol de mis mañanas", "Gracias por amarme",
+  "Quiero envejecer contigo", "Eres mi luna y mi sol", "Eres el amor hecho persona", "Tú me haces volar",
+  "Mi mundo empieza en ti", "Siempre serás tú", "Eres el amor que siempre soñé", "No hay nadie como tú",
+  "Todo lo bonito empieza contigo", "Eres la respuesta a todas mis preguntas"
+];
+
+// Función para crear frases flotantes desde arriba
+function crearFrase() {
+  const frase = document.createElement('div');
+  frase.textContent = frasesFlotantes[Math.floor(Math.random() * frasesFlotantes.length)];
+  frase.style.position = 'fixed';
+  frase.style.top = '-50px';
+  frase.style.left = Math.random() * window.innerWidth + 'px';
+  frase.style.fontSize = (14 + Math.random() * 20) + 'px';
+  frase.style.color = 'rgba(255,255,255,0.85)';
+  frase.style.fontWeight = 'bold';
+  frase.style.fontFamily = 'Dancing Script, cursive';
+  frase.style.pointerEvents = 'none';
+  frase.style.zIndex = 1;
+
+  document.body.appendChild(frase);
+
+  // Animación de caída
+  frase.animate([
+    { transform: 'translateY(0)', opacity: 1 },
+    { transform: `translateY(${window.innerHeight + 100}px)`, opacity: 0.5 }
+  ], {
+    duration: 10000 + Math.random() * 5000,
+    easing: 'ease-in'
+  });
+
+  // Eliminar frase después de animarse
+  setTimeout(() => {
+    frase.remove();
+  }, 12000);
+}
+
+// Generar 100 frases con pequeño retraso
+for (let i = 0; i < 100; i++) {
+  setTimeout(crearFrase, i * 150);
+}
+
+  </script>
+
+</body>
+</html>
